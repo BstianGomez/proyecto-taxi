@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class CheckRole
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  string  ...$roles
+     */
+    public function handle(Request $request, Closure $next, ...$roles): Response
+    {
+        if (! auth()->check()) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para acceder.');
+        }
+
+        $user = auth()->user();
+
+        // Super admin tiene acceso a todo
+        if ($user->isSuperAdmin()) {
+            return $next($request);
+        }
+
+        // Verificar si el usuario tiene alguno de los roles requeridos
+        if (! $user->hasAnyRole($roles)) {
+            abort(403, 'No tienes permiso para acceder a esta sección.');
+        }
+
+        return $next($request);
+    }
+}
