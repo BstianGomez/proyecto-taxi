@@ -85,17 +85,15 @@
         }
 
         .brand-badge {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            font-weight: 800;
-            color: var(--brand);
-            font-size: 16px;
+            padding: 4px;
         }
 
         .brand-text {
@@ -223,7 +221,9 @@
     <div class="page">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="brand-badge">T</div>
+                <div class="brand-badge">
+                    <img src="{{ asset('images/logo-fundacion.png') }}" alt="Logo" style="height: 100%; width: 100%; object-fit: contain;">
+                </div>
                 <div class="brand-text">
                     <span class="brand-title">TAXI PREMIUM</span>
                     <span class="brand-subtitle">FUNDACIÓN SOFOFA</span>
@@ -240,7 +240,7 @@
                 </a>
                 @if(auth()->user()->isAdmin())
                 <a href="{{ route('taxi.gestor') }}" class="nav-item {{ request()->routeIs('taxi.gestor') ? 'active' : '' }}">
-                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                     <span class="nav-label">Gestor de Viajes</span>
                 </a>
                 <a href="{{ route('users.index') }}" class="nav-item {{ request()->routeIs('users.index') ? 'active' : '' }}">

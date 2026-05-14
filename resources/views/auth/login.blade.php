@@ -132,13 +132,6 @@
             text-align: center;
         }
 
-        .logo {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--brand);
-            letter-spacing: -1px;
-        }
-
         .header {
             margin-bottom: 32px;
         }
@@ -344,7 +337,7 @@
         <div class="login-right">
             <div class="login-right-content">
                 <div class="logo-box">
-                    <div class="logo">TAXI PREMIUM</div>
+                    <img src="{{ asset('images/logo-fundacion.png') }}" alt="Logo Fundación" style="height: 80px; width: auto; object-fit: contain;">
                 </div>
 
                 <div class="header">

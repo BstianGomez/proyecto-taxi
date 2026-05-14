@@ -27,6 +27,11 @@ class UserController extends Controller
             'role' => ['required', Rule::in(['superadmin', 'admin', 'usuario'])],
         ]);
 
+        // Security check: Admin cannot create Super Admin
+        if (auth()->user()->role === 'admin' && $validated['role'] === 'superadmin') {
+            return back()->with('error', 'No tienes permisos para crear un usuario Super Admin.');
+        }
+
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -45,6 +50,16 @@ class UserController extends Controller
             'role' => ['required', Rule::in(['superadmin', 'admin', 'usuario'])],
             'password' => 'nullable|string|min:8',
         ]);
+
+        // Security check: Admin cannot modify Super Admin or promote to Super Admin
+        if (auth()->user()->role === 'admin') {
+            if ($user->role === 'superadmin') {
+                return back()->with('error', 'No tienes permisos para modificar a un usuario Super Admin.');
+            }
+            if ($validated['role'] === 'superadmin') {
+                return back()->with('error', 'No tienes permisos para asignar el rol de Super Admin.');
+            }
+        }
 
         $data = [
             'name' => $validated['name'],
@@ -65,6 +80,11 @@ class UserController extends Controller
     {
         if ($user->id === auth()->id()) {
             return back()->with('error', 'No puedes eliminarte a ti mismo.');
+        }
+
+        // Security check: Admin cannot delete Super Admin
+        if (auth()->user()->role === 'admin' && $user->role === 'superadmin') {
+            return back()->with('error', 'No tienes permisos para eliminar a un usuario Super Admin.');
         }
 
         $user->delete();

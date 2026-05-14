@@ -162,22 +162,27 @@
                     <td style="font-weight: 800; color: var(--brand); font-size: 14px;">${{ number_format($user->taxi_requests_sum_price ?? 0, 0, ',', '.') }}</td>
                     <td>
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-outline" style="padding: 8px; width: 36px; height: 36px; border-radius: 10px;" 
-                                onclick="openEditModal({{ json_encode($user) }})">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                                </svg>
-                            </button>
-                            @if($user->id !== auth()->id())
-                            <form action="{{ route('users.destroy', $user) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn" style="padding: 8px; width: 36px; height: 36px; border-radius: 10px; background: #fff1f2; border: 1.5px solid #fecaca; color: #e11d48;">
+                            @if(auth()->user()->role === 'superadmin' || $user->role !== 'superadmin')
+                                <button class="btn btn-outline" style="padding: 8px; width: 36px; height: 36px; border-radius: 10px;" 
+                                    onclick="openEditModal({{ json_encode($user) }})">
                                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                     </svg>
                                 </button>
-                            </form>
+                                
+                                @if($user->id !== auth()->id())
+                                <form action="{{ route('users.destroy', $user) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn" style="padding: 8px; width: 36px; height: 36px; border-radius: 10px; background: #fff1f2; border: 1.5px solid #fecaca; color: #e11d48;">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                                @endif
+                            @else
+                                <span style="font-size: 11px; color: var(--muted); font-style: italic;">Sin acceso</span>
                             @endif
                         </div>
                     </td>
@@ -215,7 +220,9 @@
                 <select name="role" class="input-field" required>
                     <option value="usuario">Usuario Estándar</option>
                     <option value="admin">Administrador</option>
-                    <option value="superadmin">Superadmin</option>
+                    @if(auth()->user()->role === 'superadmin')
+                        <option value="superadmin">Superadmin</option>
+                    @endif
                 </select>
             </div>
             <div class="input-group">
@@ -258,7 +265,9 @@
                 <select name="role" id="edit_role" class="input-field" required>
                     <option value="usuario">Usuario Estándar</option>
                     <option value="admin">Administrador</option>
-                    <option value="superadmin">Superadmin</option>
+                    @if(auth()->user()->role === 'superadmin')
+                        <option value="superadmin">Superadmin</option>
+                    @endif
                 </select>
             </div>
             <div class="input-group">
